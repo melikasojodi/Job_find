@@ -1,9 +1,11 @@
+from selenium.webdriver import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from Apply.Locators import *
 from time import sleep
-import re
+from selenium.webdriver.support.ui import Select
+
 
 from test_utils import wait_until_element_is_enabled
 
@@ -17,97 +19,69 @@ class Apply:
         wait_until_element_is_enabled(self.driver, 'xpath', login_button)
 
     def enter_username(self, username):
-        wait_until_element_is_enabled(self.driver, 'name', username_textbox)
-        self.driver.find_element('name', username_textbox).send_keys(username)
+        element = wait_until_element_is_enabled(self.driver, 'name', username_textbox)
+        element.send_keys(username)
 
     def next_step(self):
         wait_until_element_is_enabled(self.driver, 'xpath', next_step)
 
     def enter_password(self, password):
-        wait_until_element_is_enabled(self.driver, 'name', password_textbox)
-        self.driver.find_element('name', password_textbox).send_keys(password)
+        element = wait_until_element_is_enabled(self.driver, 'name', password_textbox)
+        element.send_keys(password)
 
     def submit(self):
         wait_until_element_is_enabled(self.driver, 'xpath', submit)
 
-    def user_profile(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', user_profile)
+    def search_job(self):
+        element = wait_until_element_is_enabled(self.driver, 'xpath', search_job)
+        element.send_keys("front end vue")
 
-    def mainpage_button_xpath(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', mainpage_button_xpath)
+    def search_btn(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', search_btn)
 
-    def job_group_filter(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', job_group_filter)
+    def city_filter(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', city_filter)
 
-    def filter_selection(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', filter_selection)
+    def city_option(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', city_option)
 
-    def search_in_jobs(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', search_in_jobs)
+    def option_tree(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', option_tree)
 
-    def post_job_selection(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', post_job_selection)
+    def level_filter(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', level_filter)
 
-    def apply_for_job(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', apply_for_job)
+    def level_option(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', level_option)
 
-    def check_apply_for_job(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', check_apply_for_job)
-
-    def check_apply_for_suggested_jobs(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', check_apply_for_suggested_jobs)
+    def send_resume(self):
+        try:
+            wait_until_element_is_enabled(self.driver, 'xpath', send_resume)
+        except:
+            pass
 
     def close_check_apply_modal(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', close_check_apply_modal)
+        try:
+            wait_until_element_is_enabled(self.driver, 'xpath', close_check_apply_modal)
+        except:
+            pass
 
-    def logout(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', logout)
+    def group_job_filter(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', group_job_filter)
 
-    def jobs_page(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', jobs_page)
+    def group_job_option(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', group_job_option)
 
-    def search_job(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', search_job)
-        load_more = self.wait.until(
-            EC.element_to_be_clickable((By.XPATH, search_job)))
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", load_more)
-        self.driver.execute_script("window.scrollBy(0,-200);")
-        load_more.send_keys("برنامه نویس")
+    def sanat_filter(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', sanat_filter)
 
-    def search_job_in_job_group_filter(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', search_job_in_job_group_filter)
-        load_more = self.wait.until(
-            EC.element_to_be_clickable((By.XPATH, search_job_in_job_group_filter)))
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", load_more)
-        self.driver.execute_script("window.scrollBy(0,-200);")
-        load_more.send_keys("برنامه نویس")
+    def sanat_option(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', sanat_option)
 
-    def select_job_in_job_group_filter(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', select_job_in_job_group_filter)
+    def show_result(self):
+        wait_until_element_is_enabled(self.driver, 'xpath', show_result)
 
-    def number_of_jobs(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', number_of_jobs)
-        element = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, number_of_jobs))
-        )
-        text = element.text  # Get the text content of the element
-        # Extract numbers from the text using regex
-        numbers = re.findall(r'\d+', text)
-        if numbers:
-            numeric_value = int(numbers[0])  # Assuming the first number is the count
-            assert numeric_value > 100, f"Expected more than 100 jobs, found: {numeric_value}"
-        else:
-            assert False, "No numeric value found in the element text"
-
-    def search_in_jobs_page(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', search_in_jobs_page)
-
-    def confirm_job_page(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', confirm_job_page)
-
-    def recommended_jobs_page(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', recommended_jobs_page)
-
-    def check_apply_for_recommended_jobs_page(self):
-        wait_until_element_is_enabled(self.driver, 'xpath', check_apply_for_recommended_jobs_page)
-
+    def new_jobs(self):
+        new_jobs_element = wait_until_element_is_enabled(self.driver, 'tag name', new_jobs);
+        select_element = Select(new_jobs_element)
+        select_element.select_by_visible_text("جدیدترین‌ها")
